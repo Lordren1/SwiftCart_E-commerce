@@ -1,9 +1,10 @@
 
 'use client';
 
+import { generatePagination } from '@/lib/pagination';
 import Link from 'next/link';
 import { usePathname, useSearchParams } from 'next/navigation';
-import { generatePagination } from '@/lib/pagination';
+/* import { generatePagination } from '@/lib/pagination'; */
 
 export default function Pagination({ totalPages }) {
   const pathname = usePathname();

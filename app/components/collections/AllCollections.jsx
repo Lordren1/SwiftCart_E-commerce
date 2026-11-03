@@ -2,10 +2,11 @@
 
 import { useEffect } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
-import { useAppContext } from "@/context/AppContext";
+
 import Title from "../title/Title";
 import ProductCard from "../product/ProductCard";
 import Pagination from "../pagination/Pagination";
+import { useAppContext } from "@/context/AppContext";
 
 const PRODUCTS_PER_PAGE = 12;
 

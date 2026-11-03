@@ -1,5 +1,6 @@
 "use client";
 
+
 import ActiveLinkIndicator from "@/app/components/linkIndicator/ActiveLinkIndicator";
 import Link from "next/link";
 import { Suspense } from "react";

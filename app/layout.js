@@ -1,9 +1,10 @@
 import { Inter } from "next/font/google";
 import "./globals.css";
-import AppContextProvider from "@/context/AppContext";
+/* import AppContextProvider from "@/context/AppContext"; */
 import {  Toaster } from "react-hot-toast";
 import Provider from "./Provider";
 import { ClerkProvider } from "@clerk/nextjs";
+import AppContextProvider from "@/context/AppContext";
 
 const inter = Inter({
   variable: "--font-inter-sans",

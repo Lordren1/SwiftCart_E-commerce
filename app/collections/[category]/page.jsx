@@ -1,5 +1,6 @@
 "use client";
 
+
 import CategoryFilterContent from "@/app/components/product/CategoryFilterContent";
 import { Suspense } from "react";
 

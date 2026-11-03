@@ -2,8 +2,9 @@
 
 import Title from "../title/Title";
 import ProductCard from "../product/ProductCard";
-import { useAppContext } from "@/context/AppContext";
+
 import { useEffect, useState } from "react";
+import { useAppContext } from "@/context/AppContext";
 
 export default function PopularProducts() {
   const { products } = useAppContext();

@@ -1,10 +1,9 @@
 "use client";
 
-import { useAppContext } from "@/context/AppContext";
-
 import Image from "next/image";
 import { Icon } from "@iconify/react";
 import CartTotal from "../components/cart/CartTotal";
+import { useAppContext } from "@/context/AppContext";
 
 export default function Cart() {
   const {

@@ -1,7 +1,9 @@
 "use client";
 
+
 import { useAppContext } from "@/context/AppContext";
 import { addressDummyData } from "@/data";
+/* import { addressDummyData } from "@/data"; */
 import { useEffect, useState } from "react";
 
 export default function CartTotal() {

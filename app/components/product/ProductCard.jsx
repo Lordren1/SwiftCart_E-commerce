@@ -4,8 +4,10 @@ import { Icon } from "@iconify/react";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { useAppContext } from "@/context/AppContext";
+/* import { useAppContext } from "@/context/AppContext"; */
 import SizeSelector from "./SizeSelector";
+import { useAppContext } from "@/context/AppContext";
+
 
 export default function ProductCard({ product }) {
   const { updateCartQuantity, addToCart, cartItems, currency } =

@@ -12,6 +12,8 @@ import "swiper/css/pagination";
 import ProductCard from "../product/ProductCard";
 import { useAppContext } from "@/context/AppContext";
 
+
+
 export default function NewArrivals() {
   const { products } = useAppContext();
 

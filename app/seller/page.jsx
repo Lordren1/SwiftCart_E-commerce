@@ -5,6 +5,7 @@ import { useState, useMemo, useEffect } from "react";
 import { Icon } from "@iconify/react";
 import SectionHeading from "../components/seller/SectionHeading";
 import { useAppContext } from "@/context/AppContext";
+/* import { useAppContext } from "@/context/AppContext"; */
 
 // Convert newly uploaded images into data URLs so they can be previewed and stored in the product payload.
 const fileTodataURL = (file) =>

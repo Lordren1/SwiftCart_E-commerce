@@ -1,6 +1,6 @@
 "use client";
 
-import SellersOrderList from "@/app/components/seller/SellersOrderList";
+import SellerOrderList from "@/app/components/seller/SellerOrderList";
 import { Suspense } from "react";
 
 export default function OrderList() {
@@ -13,7 +13,7 @@ export default function OrderList() {
           </main>
         }
       >
-        <SellersOrderList />
+        <SellerOrderList />
       </Suspense>
     </>
   );

@@ -7,14 +7,15 @@ import HeaderLinks from "./navigation/HeaderLink";
 import MobileHeaderLinks from "./navigation/MobileHeaderLink";
 import { Icon } from "@iconify/react";
 import Link from "next/link";
-import { useAppContext } from "@/context/AppContext";
+/* import { useAppContext } from "@/context/AppContext"; */
 import { useClerk, UserButton } from "@clerk/nextjs";
+import { useAppContext } from "@/context/AppContext";
 /* import Sidebar from "./Sidebar"; */
 
 export default function Header() {
   const { getCartCount, isSeller, user, router } = useAppContext();
   const [sticky, setSticky] = useState(false);
-  const [isOpenSidebar, setIsOpenSidebar] = useState(false);
+  /* const [isOpenSidebar, setIsOpenSidebar] = useState(false); */
   const [navbarOpen, setNavbarOpen] = useState(false);
 
   const { openSignIn } = useClerk();
