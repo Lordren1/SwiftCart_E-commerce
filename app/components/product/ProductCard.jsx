@@ -75,12 +75,12 @@ export default function ProductCard({ product }) {
         </p>
 
         <Link href={`/product/${product._id}`}>
-          <h3
-            className="mt-1 truncate font-bold text-slate-900"
+          <h4
+            className="mt-1 truncate font-semibold text-slate-900"
             title={product.name}
           >
             {product.name}
-          </h3>
+          </h4>
         </Link>
 
         {/* Rating */}

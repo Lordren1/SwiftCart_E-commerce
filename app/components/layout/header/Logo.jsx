@@ -15,7 +15,7 @@ export default function Logo({ sticky, isSidebar = false }) {
             alt="SwiftCart Logo"
             width={45}
             height={45}
-            className="object-contain rounded-xl shadow-md border border-white/10"
+            className="w-[45px] h-[45px] object-contain rounded-xl shadow-md border border-white/10"
             priority
           />
         </div>
