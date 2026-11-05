@@ -2,6 +2,7 @@
 import { Inngest } from "inngest";
 import dbConnection from "./mongodb";
 import User from "@/models/User";
+import Order from "@/models/Order";
 
 export const inngest = new Inngest({ id: "swift_e-commerce" });
 
@@ -16,13 +17,32 @@ export const syncUserCreated = inngest.createFunction(
 
     const userData = {
       _id: id,
-      email: email_addresses[0].email_address,
+      email: email_addresses[0].email_address || "",
       name: first_name + " " + last_name,
-      imageUrl: image_url,
+      imageUrl: image_url || "",
     };
 
     await dbConnection(); // Esure the database connection is established
-    await User.create(userData); // Save the user to the database
+    /* await User.create(userData); */ // Save the user to the database
+    
+    // Upsert prevents duplicate records if Inngest retries the event.
+    await User.findByIdAndUpdate(
+      id,
+      {
+        $set: userData,
+      },
+      {
+        upsert: true,
+        new: true,
+        runValidators: true,
+      }
+    );
+
+    return {
+      success: true,
+      message: "User created or synchronized",
+      userId: id,
+    };
   }
 );
 
@@ -30,20 +50,35 @@ export const syncUserCreated = inngest.createFunction(
 export const syncUserUpdated = inngest.createFunction(
   {
     id: "sync-clerk-user-updated",
-    triggers: { event: "clerk/user.updated" },
+    triggers: [{ event: "clerk/user.updated" }],
   },
   async ({ event }) => {
     const {id, first_name, last_name, email_addresses, image_url } = event.data;
 
     const userData = {
       _id: id,
-      email: email_addresses[0].email_address,
+      email: email_addresses[0].email_address || "",
       name: first_name + " " + last_name,
-      imageUrl: image_url,
+      imageUrl: image_url || "",
     };
 
     await dbConnection(); // Esure the database connection is established
-    await User.findByIdAndUpdate(id, userData); // Update the user in the database
+
+    await User.findByIdAndUpdate(
+      id, {
+        $set: userData,
+      },
+      {
+        new: true,
+        runValidators: true,
+      }
+    ); 
+
+    return {
+      success: true,
+      message: "User updated",
+      userId: id,
+    };
   }
 );
 
@@ -51,13 +86,20 @@ export const syncUserUpdated = inngest.createFunction(
 export const syncUserDeleted = inngest.createFunction(
   {
     id: "sync-clerk-user-deleted",
-    triggers: { event: "clerk/user.deleted" },
+    triggers: [{ event: "clerk/user.deleted" }],
   },
   async ({ event }) => {
     const {id} = event.data;
 
     await dbConnection(); // Esure the database connection is established
+
     await User.findByIdAndDelete(id); // Delete the user from the database
+
+    return {
+      success: true,
+      message: "User deleted",
+      UserId: id,
+    };
   }
 );
 
