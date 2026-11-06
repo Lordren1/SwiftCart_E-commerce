@@ -6,7 +6,7 @@ import Order from "@/models/Order";
 
 export const inngest = new Inngest({ id: "swift_e-commerce" });
 
-// Handle user creation to save the user to the database
+// Handle user creation - to save the user to the database
 export const syncUserCreated = inngest.createFunction(
   {
     id: "sync-clerk-user-created",
@@ -16,9 +16,8 @@ export const syncUserCreated = inngest.createFunction(
     const {id, first_name, last_name, email_addresses, image_url } = event.data;
 
     const userData = {
-      _id: id,
       email: email_addresses[0].email_address || "",
-      name: first_name + " " + last_name,
+      name: [first_name, last_name].filter(Boolean).join(" "),
       imageUrl: image_url || "",
     };
 
@@ -26,17 +25,24 @@ export const syncUserCreated = inngest.createFunction(
     /* await User.create(userData); */ // Save the user to the database
     
     // Upsert prevents duplicate records if Inngest retries the event.
-    await User.findByIdAndUpdate(
+    const user = await User.findByIdAndUpdate(
       id,
       {
         $set: userData,
+        $setOnInsert: {
+          _id: id,
+        },
       },
       {
         upsert: true,
         new: true,
         runValidators: true,
+        setDefaultsOnInsert: true,
       }
     );
+
+    console.log("Clerk user synchronized:", user._id);
+    
 
     return {
       success: true,
@@ -56,15 +62,14 @@ export const syncUserUpdated = inngest.createFunction(
     const {id, first_name, last_name, email_addresses, image_url } = event.data;
 
     const userData = {
-      _id: id,
       email: email_addresses[0].email_address || "",
-      name: first_name + " " + last_name,
+      name: [first_name, last_name].filter(Boolean).join(" "),
       imageUrl: image_url || "",
     };
 
     await dbConnection(); // Esure the database connection is established
 
-    await User.findByIdAndUpdate(
+    const user = await User.findByIdAndUpdate(
       id, {
         $set: userData,
       },
@@ -74,6 +79,12 @@ export const syncUserUpdated = inngest.createFunction(
       }
     ); 
 
+    if (!user) {
+      throw new Error(`User ${id} was not found in MongoDB`);
+    }
+
+    console.log("Clerk user updated:", user._id);
+    
     return {
       success: true,
       message: "User updated",

@@ -26,13 +26,23 @@ export default async function dbConnection() {
   if (!dbCache.promise) {
     const options = {
       dbName: "swiftcart",
-      bufferCommands: false,
+      bufferCommands: false, // Prevent mongoose from buffering operations
     };
 
-    dbCache.promise = mongoose.connect(MONGO_URI, options);
+    dbCache.promise = mongoose.connect(MONGO_URI, options).then((mongoose) => {
+      console.log("✔ MongoDB connected successfully");
+      return mongoose;
+    }).catch((error) => {
+      console.error("❌ MongoDB connection error:", error);
+      throw error;
+    });
   }
 
-  try {
+  // Await the promise and cache the connection object
+  dbCache.conn = await dbCache.promise;
+  return dbCache.conn;
+
+  /* try {
     dbCache.conn = await dbCache.promise;
 
     console.log("MongoDB connected successfully");
@@ -42,5 +52,7 @@ export default async function dbConnection() {
     dbCache.promise = null;
     console.error("MongoDB connection error:", error);
     throw error;
-  }
+  } */
+
+  
 }

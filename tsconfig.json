@@ -37,7 +37,7 @@
     "**/*.tsx",
     "**/*.js",
     "**/*.jsx"
-, "app/api/inngest/route.js"  ],
+, "app/api/inngest/route.ts"  ],
   "exclude": [
     "node_modules"
   ]
