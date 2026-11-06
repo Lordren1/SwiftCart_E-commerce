@@ -1,41 +1,46 @@
+
 import mongoose from "mongoose";
 
 const MONGO_URI = process.env.MONGO_URI;
 
 if (!MONGO_URI) {
-  throw new Error("Please define the MONGO_URI environment variable inside .env");
+  throw new Error("Please define MONGO_URI in your environment variables.");
 }
 
 let dbCache = global.mongoose;
 
 if (!dbCache) {
-  dbCache = global.mongoose = { conn: null, promise: null };
+  dbCache = global.mongoose = {
+    conn: null,
+    promise: null,
+  };
 }
 
 export default async function dbConnection() {
-  // Return existing connection if present
-  if (dbCache.com) {
-    return dbCache.com;
+  // Return existing connection
+  if (dbCache.conn) {
+    return dbCache.conn;
   }
 
-  // Create a new connection if not present
+  // Establish a new connection if one doesn't exist
   if (!dbCache.promise) {
     const options = {
-      dbName: "swiftcart", // Change if needed
-      bufferCommands: false, // prevent mongoose from buffering commands if not connected
-    }
+      dbName: "swiftcart",
+      bufferCommands: false,
+    };
 
-    dbCache.promise =  mongoose.connect(MONGO_URI, options).then((mongoose) => {
-      console.log("✔ MongoDB connected successfully");
-      return mongoose;
-
-    }).catch((error) => {
-      console.error("❌ MongoDB connection error:", error);
-      throw error;
-    });
+    dbCache.promise = mongoose.connect(MONGO_URI, options);
   }
 
-  // Await the promise and cache the connection object
-  dbCache.com = await dbCache.promise;
-  return dbCache.com;
+  try {
+    dbCache.conn = await dbCache.promise;
+
+    console.log("MongoDB connected successfully");
+
+    return dbCache.conn;
+  } catch (error) {
+    dbCache.promise = null;
+    console.error("MongoDB connection error:", error);
+    throw error;
+  }
 }
